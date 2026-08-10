@@ -47,7 +47,15 @@ Use `render_flow_svg.py` for simple chains. Create custom SVG for cross-sections
 
 ## HTML Requirements
 
-The bundled template is local-first and has no CDN dependency. Preserve:
+The bundled template is local-first, has no CDN dependency, and uses a restrained Stanford-inspired research palette:
+
+- Cardinal Red `#8C1515` and deep red `#820000` for navigation, hierarchy, and decision emphasis;
+- warm white `#F5F4F1`, pearl `#FBFAF8`, charcoal `#2E2D29`, and neutral grey for the reading surface;
+- red is an emphasis color, not a full-page decoration; do not introduce gradients, glowing effects, or unrelated accent hues;
+- use the same semantic roles in charts and diagrams: cardinal for the focal route or conclusion, charcoal for primary context, and neutral grey for alternatives;
+- reserve green and amber for explicitly positive and cautionary data semantics, not decoration.
+
+Preserve:
 
 - responsive article width and typography;
 - desktop sidebar and narrow-screen menu;
@@ -58,4 +66,4 @@ The bundled template is local-first and has no CDN dependency. Preserve:
 - dark/light theme and font controls;
 - working relative links to diagrams, models, and source files.
 
-Render from Markdown using `render_report.py`. Inspect desktop and a narrow viewport. Verify heading hierarchy, list numbering, table overflow, local assets, and unresolved template tokens. Do not ship the HTML if essential diagrams are clipped or unreadable.
+Render from Markdown using `render_report.py`. Inspect desktop and a narrow viewport in both light and dark themes. Verify heading hierarchy, list numbering, table overflow, local assets, focus states, and unresolved template tokens. Do not ship the HTML if essential diagrams are clipped or unreadable.
