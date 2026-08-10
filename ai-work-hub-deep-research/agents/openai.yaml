@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Work Hub Deep Research"
+  short_description: "Deep technical and industry investment research"
+  default_prompt: "Use $ai-work-hub-deep-research to build an independent, source-backed report with technical mechanisms, five-year technology trends, global and China competition, market sizing, visuals, and an investment view."

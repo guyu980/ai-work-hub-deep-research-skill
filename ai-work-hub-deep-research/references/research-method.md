@@ -1,0 +1,68 @@
+# Research Method
+
+## Contents
+
+1. Pre-research frame
+2. Analysis sequence
+3. Independent-thinking tests
+4. Investment output
+
+## Pre-research Frame
+
+Write this before reading third-party conclusions:
+
+- Decision: what capital allocation, diligence, strategy, or coverage decision will this research support?
+- Unit of analysis: component, subsystem, product, platform, service, or entire value chain?
+- Geography and horizon: global, China, and exact five forecast years.
+- Inclusions and exclusions: adjacent markets, substitutes, replacement demand, software/services, NRE, aftermarket, and internal OEM production.
+- Competing hypotheses: at least one bull case, one bear case, and one alternative explanation.
+- Falsifiers: observations that would show the demand, technical route, value-capture layer, or investment thesis is wrong.
+- Unknowns: facts requiring company, customer, supplier, academic, or expert interviews.
+
+The frame can change after evidence arrives, but record the reason rather than rewriting history invisibly.
+
+## Analysis Sequence
+
+Use this dependency order:
+
+```text
+decision question
+  -> system boundary and user task
+  -> physical/technical signal chain
+  -> route mechanisms and engineering trade-offs
+  -> products, substitutes, and value chain
+  -> demand and willingness to pay
+  -> competition and likely value capture
+  -> independent market model
+  -> investment judgment and proof gates
+```
+
+Do not start from a market CAGR and work backward to a thesis. Do not rank a technology before defining the task and environment it must serve.
+
+## Independent-Thinking Tests
+
+Before finalizing, answer:
+
+1. Which conclusion existed before the public-source scan, and how did evidence change it?
+2. Which important claim is supported only by a third-party forecast or company statement?
+3. Are two sources describing the same market boundary, geography, price basis, and year?
+4. What is the strongest substitute, including an architecture that avoids buying the product?
+5. Which incumbent advantage is structurally hard for a startup to reproduce?
+6. Which startup advantage disappears after standards and interfaces stabilize?
+7. What does the market consensus overestimate? What does it underestimate?
+8. Which single driver explains most forecast variance?
+9. What evidence would reverse the route preference or investment conclusion?
+
+If these questions cannot be answered, the work is not yet independent research.
+
+## Investment Output
+
+Separate:
+
+- Industry necessity: which tasks truly require the capability?
+- Route view: which mechanism wins where, and why no route wins everywhere?
+- Value capture: component, subsystem, integration, data, software, service, or OEM layer?
+- Timing: current revenue, medium-term adoption, and long-term option value.
+- Deal view: company quality, proof status, financing heat, price, position, and rights.
+
+For a thematic report, state investable directions, crowded trades, and proof milestones. For a project-linked report, map the sector findings into the existing project judgment without creating a parallel judgment file.
