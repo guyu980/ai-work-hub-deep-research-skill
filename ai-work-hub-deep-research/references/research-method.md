@@ -18,6 +18,7 @@ Write this before reading third-party conclusions:
 - Competing hypotheses: at least one bull case, one bear case, and one alternative explanation.
 - Falsifiers: observations that would show the demand, technical route, value-capture layer, or investment thesis is wrong.
 - Unknowns: facts requiring company, customer, supplier, academic, or expert interviews.
+- Prior private sources: relevant core notes under `知识来源/`, including what they establish and what still needs independent validation.
 
 The frame can change after evidence arrives, but record the reason rather than rewriting history invisibly.
 
@@ -66,3 +67,5 @@ Separate:
 - Deal view: company quality, proof status, financing heat, price, position, and rights.
 
 For a thematic report, state investable directions, crowded trades, and proof milestones. For a project-linked report, map the sector findings into the existing project judgment without creating a parallel judgment file.
+
+When an expert interview or thematic material is a research input, preserve it once under `知识来源/`. The report should cite or link that source and add analysis; it should not recreate another transcript or source summary unless the report needs a short decision-relevant excerpt.

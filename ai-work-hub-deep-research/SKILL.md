@@ -22,6 +22,7 @@ Hard requirements:
 - Lead the conclusion with an investment view, price discipline when relevant, proof gates, and disconfirming evidence.
 - Generate both Markdown and a readable local HTML version unless the user requests chat-only work.
 - Retrieve from and write reusable increments to Memory Graph when available, but never copy private workspace content into this public skill repository.
+- Search relevant `知识来源/` core notes before external research when that private source layer exists. Store a supplied source once and link to it rather than copying it into a report folder.
 
 Read the references triggered by the task:
 
@@ -42,6 +43,8 @@ Use one of three modes:
 | Chat-only | Current conversation and supplied sources | Do not create or modify files |
 
 For project-linked work, read the existing project judgment, state, supplied materials, and relevant prior outputs first. The industry report is a separate research deliverable; it must not become a second running project judgment. If the report changes the company view, use `ai-work-hub-diligence` to update the existing judgment and state after the report is finalized.
+
+`知识来源/` is an input library, not a fourth report mode. A reusable expert interview or thematic source is first initialized and lightly analyzed through `ai-work-hub-memory-graph`. Deep Research consumes it when the user asks for external validation, cross-source synthesis, or a formal systematic report. Keep the original and core source note in `知识来源/`; link them from the research object.
 
 For standalone work, initialize a standard object when it does not exist:
 
@@ -65,9 +68,9 @@ The initializer refuses to overwrite an existing report or model.
 ## Run The Research Loop
 
 1. Resolve mode, workspace, deliverables, decision user, time horizon, geography, currency, and market boundary.
-2. Retrieve relevant project, sector, technical, valuation, event, and people context from Memory Graph when it exists. Open source cards behind useful matches.
+2. Retrieve relevant project, sector, technical, valuation, event, and people context from Memory Graph when it exists. Search relevant `知识来源/` core notes and open the underlying source only when needed.
 3. Write a pre-research frame: decision question, scope inclusions/exclusions, initial hypotheses, likely substitutes, and facts that would disprove the thesis.
-4. Read supplied project materials before external research in project-linked mode. Preserve source claims as claims.
+4. Read supplied project materials before external research in project-linked mode. In standalone mode, link any reusable supplied source from `知识来源/` rather than making a second copy. Preserve source claims as claims.
 5. Research external evidence using the source hierarchy. Prefer original papers, standards, official statistics, regulatory documents, company filings/product documentation, and reputable industry organizations. Use strong third-party reports as evidence inputs, not conclusion authorities.
 6. Maintain the evidence ledger while researching. Record conflicting definitions and numbers instead of silently reconciling them.
 7. Reconstruct the system boundary and technical mechanisms; draw the signal chain and route-level diagrams.
@@ -167,8 +170,10 @@ State the strongest opposing case, the evidence that would change the conclusion
 Use the companion `ai-work-hub-memory-graph` skill when `<workspace_root>/Memory Graph/` exists.
 
 - Retrieve before final route and investment judgments.
+- Search relevant `知识来源/` notes as first-party context before external research.
 - Finalize the report first.
 - Keep company-specific details in the project object.
+- Keep non-project interview or thematic source detail in its single `知识来源/` core note.
 - Put repeated market structure in the sector map, technical mechanisms and benchmarks in technical themes, reusable financing evidence in valuation anchors, durable cross-project changes in event cards, and independently important experts in people cards.
 - Update existing objects when possible. Do not create the same fact in several cards.
 - Rebuild indexes; never hand-edit JSONL caches.
@@ -188,6 +193,7 @@ Before declaring the research complete, verify:
 9. Markdown numbering is hierarchical; ordered lists do not restart accidentally in HTML.
 10. HTML has a working table of contents, no unresolved template tokens, and no missing local assets.
 11. Memory Graph retrieval/writeback and validation completed when available, or the exact failure is reported.
+12. Reusable supplied sources were stored once and linked from the report rather than duplicated.
 
 Run the bundled validator:
 

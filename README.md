@@ -14,6 +14,7 @@ A Codex skill for independent, source-backed industry and technology research fo
 - Decision-oriented investment views, proof gates, disconfirming evidence, and valuation implications.
 - A responsive local HTML report with SVG figures and working relative links.
 - Optional retrieval from and writeback to the private AI Work Hub Memory Graph.
+- Retrieval and reuse of existing private expert interviews and thematic sources without duplicating them.
 
 The workflow treats papers and reputable third-party reports as evidence inputs, not conclusion authorities. It separates facts, source claims, external forecasts, and the report's own assumptions before rebuilding the analysis.
 
@@ -52,9 +53,9 @@ Use $ai-work-hub-deep-research, but keep the work in chat and do not create file
 ## Companion Skills
 
 - `ai-work-hub-diligence` owns the evolving company judgment, project state, and follow-up diligence.
-- `ai-work-hub-memory-graph` retrieves and stores sparse reusable project, sector, technical, valuation, event, and people knowledge.
+- `ai-work-hub-memory-graph` ingests and lightly analyzes non-project interviews or thematic sources, then retrieves and stores sparse reusable project, sector, technical, valuation, event, and people knowledge.
 
-The deep-research report remains a separate deliverable. A project judgment changes through the diligence workflow after the report is finalized.
+`知识来源/` is a research input layer, not a fourth report mode. Use this Skill only when external search, cross-source validation, or systematic research is needed; the original source and its core note remain in one source folder. The deep-research report remains a separate deliverable. A project judgment changes through the diligence workflow after the report is finalized.
 
 ## Repository Boundary
 
