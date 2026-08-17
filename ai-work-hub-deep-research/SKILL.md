@@ -1,6 +1,6 @@
 ---
 name: ai-work-hub-deep-research
-description: Use for deep, source-backed research from either an active investment project or a standalone industry, technology, value-chain, or thematic question. Reconstructs system boundaries and technical mechanisms, compares technology routes and substitutes, maps global and China competitors including incumbents and startups, builds transparent five-year global and China market forecasts, produces decision-oriented investment conclusions, creates explanatory diagrams and a readable local HTML report, and routes reusable findings into an optional private AI Work Hub Memory Graph. Trigger for industry reports, sector maps, technical-route studies, competitive landscapes, market sizing, thematic investment research, or project-adjacent deep research; do not use for a short company-only BP screen when ai-work-hub-diligence is sufficient.
+description: Use only when the user explicitly asks for deep research or a formal systematic industry, technology, value-chain, or thematic report, including broad external validation, route and substitute comparison, competitive mapping, five-year market sizing, diagrams, or a durable Markdown and HTML research deliverable. Do not auto-trigger for a single expert interview, Feishu meeting note or transcript, thematic briefing, course, podcast, or material analysis; route those first through `ai-work-hub-memory-graph` and `知识来源/`, even when the user asks to analyze deeply. Do not interpret “不要深度研究” as chat-only Deep Research. Use diligence for company-only investment screens.
 ---
 
 # AI Work Hub Deep Research
@@ -34,6 +34,8 @@ Read the references triggered by the task:
 
 ## Resolve The Research Mode
 
+This section applies only after the user has explicitly requested Deep Research or a formal systematic research deliverable. A single reusable interview or material belongs to `ai-work-hub-memory-graph`; if the user says not to do deep research, reroute there rather than selecting Chat-only Deep Research.
+
 Use one of three modes:
 
 | Mode | Source of truth | Default storage |
@@ -44,7 +46,7 @@ Use one of three modes:
 
 For project-linked work, read the existing project judgment, state, supplied materials, and relevant prior outputs first. The industry report is a separate research deliverable; it must not become a second running project judgment. If the report changes the company view, use `ai-work-hub-diligence` to update the existing judgment and state after the report is finalized.
 
-`知识来源/` is an input library, not a fourth report mode. A reusable expert interview or thematic source is first initialized and lightly analyzed through `ai-work-hub-memory-graph`. Deep Research consumes it when the user asks for external validation, cross-source synthesis, or a formal systematic report. Keep the original and core source note in `知识来源/`; link them from the research object.
+`知识来源/` is an input library, not a fourth report mode. A reusable expert interview or thematic source is first initialized and substantively analyzed through `ai-work-hub-memory-graph`. Deep Research consumes it only when the user explicitly asks for deep research, cross-source synthesis, or a formal systematic report. Keep the original and core source note in `知识来源/`; link them from the research object.
 
 For standalone work, initialize a standard object when it does not exist:
 
