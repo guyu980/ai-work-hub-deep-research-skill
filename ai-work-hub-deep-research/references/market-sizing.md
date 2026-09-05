@@ -1,4 +1,6 @@
-# Five-Year Global And China Market Sizing
+# Decision-Relevant Market Sizing
+
+Use only when sizing answers the research question. Choose geography, horizon and depth accordingly; five-year Global and China forecasts are not mandatory. An order-of-magnitude range can be more honest and useful than a detailed model with unsupported inputs.
 
 ## Contents
 
@@ -16,7 +18,7 @@ Write a one-sentence market definition before calculating. Specify:
 - customer and paid transaction;
 - new shipments, installed base, replacement, usage, seats, capacity, or another unit;
 - hardware, software, services, NRE, maintenance, and internal OEM production treatment;
-- global and China definitions;
+- definitions for the geographies actually modeled;
 - nominal currency, FX, and exact forecast years.
 
 Avoid double counting bundled components, channel revenue, internal transfer value, and services already included in product ASP.
@@ -53,18 +55,18 @@ annual revenue = deployed capacity × utilization × price per capacity unit
 
 Show the driver table, not only final totals. Every driver must be tagged as actual, external forecast, company/source claim, or report assumption.
 
-Build global and China separately. Do not derive China as an arbitrary percentage of global unless that share has a causal model. Reconcile China into global without double counting.
+When modeling both global and China, build them separately rather than assigning an arbitrary share, and reconcile without double counting.
 
 ## Scenarios And Sensitivity
 
-Create conservative, base, and upside scenarios. Vary only drivers with a causal reason. Typical drivers include units, penetration, ASP/BOM, service ratio, replacement cycle, utilization, and FX.
+Use scenarios or sensitivity when the uncertainty matters. Vary drivers with a causal reason, such as units, penetration, price, utilization or replacement. Do not fabricate scenarios simply to fill rows.
 
 For every model:
 
-- include five annual forecast years;
+- use the requested or decision-relevant forecast horizon;
 - show the base-year anchor when available;
 - state the largest uncertainty;
-- run at least one one-way sensitivity and one combined downside/upside scenario;
+- test the material uncertain drivers, without requiring every sensitivity format;
 - explain step changes, price declines, and penetration curves;
 - avoid precision beyond the quality of inputs.
 
@@ -72,7 +74,7 @@ Use CAGR as a summary of the constructed model, not as the construction method.
 
 ## Cross-Checks
 
-Use at least two:
+Choose the informative cross-checks available:
 
 - top-down industry or adjacent-market share;
 - revenue capacity of identified vendors;

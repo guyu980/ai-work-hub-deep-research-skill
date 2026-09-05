@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import math
 from html.parser import HTMLParser
 from pathlib import Path
 import re
@@ -25,8 +26,12 @@ COVERAGE = {
     "technology trends": ("技术发展趋势", "技术趋势", "发展趋势", "technology trend", "development trend"),
     "competition": ("竞争格局", "竞争地图", "competitive landscape"),
     "market sizing": ("市场规模", "market sizing", "market size"),
-    "investment judgment": ("投资判断", "投资机会", "investment judgment", "investment view"),
+    "investment judgment": ("投资判断", "投资机会", "当前判断", "研究结论", "核心判断", "investment judgment", "investment view"),
     "sources": ("主要来源", "证据说明", "sources", "evidence notes"),
+}
+OPTIONAL_MODULES = {
+    "technical": "technical foundations", "routes": "technology routes",
+    "trends": "technology trends", "competition": "competition", "market": "market sizing",
 }
 
 
@@ -142,56 +147,45 @@ def validate_evidence(path: Path, errors: list[str], warnings: list[str]) -> Non
             errors.append(f"evidence row {row_number}: sourced status without source")
 
 
-def normalize_geography(value: str) -> str | None:
-    value = normalized(value)
-    if value in {"global", "world", "全球"}:
-        return "global"
-    if value in {"china", "prc", "中国", "中国大陆"}:
-        return "china"
-    return None
-
-
-def validate_market(path: Path, errors: list[str], warnings: list[str]) -> None:
+def validate_market(path: Path, errors: list[str], warnings: list[str], model_format: str = "generic") -> None:
     headers, rows = read_headers(path)
-    missing = sorted(MARKET_COLUMNS - set(headers))
+    missing = sorted(MARKET_COLUMNS - set(headers)) if model_format == "shipment-bom" else []
     if missing:
         errors.append(f"market model missing columns: {', '.join(missing)}")
         return
     if not rows:
         errors.append("market model has no data rows")
         return
-    years: dict[tuple[str, str], set[int]] = {}
-    geographies: set[str] = set()
-    scenarios: set[str] = set()
+    if not headers or any(not key for key in headers) or len(headers) != len(set(headers)):
+        errors.append("market model has empty or duplicate column names")
     for row_number, row in enumerate(rows, 2):
-        geography = normalize_geography(row.get("geography", ""))
-        if geography:
-            geographies.add(geography)
-        scenario = normalized(row.get("scenario", ""))
-        scenarios.add(scenario)
-        try:
-            year = int(row.get("year", ""))
-        except ValueError:
-            errors.append(f"market row {row_number}: invalid year {row.get('year')!r}")
+        if None in row or any(value is None for value in row.values()):
+            errors.append(f"market row {row_number}: row width differs from the header")
             continue
-        if geography:
-            years.setdefault((scenario, geography), set()).add(year)
+        if "year" in row:
+            try:
+                int(row["year"])
+            except ValueError:
+                errors.append(f"market row {row_number}: invalid year {row['year']!r}")
+        if model_format != "shipment-bom":
+            continue
+        for key in ("addressable_units", "paid_penetration", "hardware_bom", "software_service_ratio", "fx_to_cny"):
+            try:
+                value = float(row[key])
+                valid = math.isfinite(value) and value >= 0
+                if key == "paid_penetration":
+                    valid = valid and value <= 1
+                if key == "fx_to_cny":
+                    valid = valid and value > 0
+                if not valid:
+                    raise ValueError
+            except ValueError:
+                errors.append(f"market row {row_number}: invalid {key} {row[key]!r}")
         for key in ("units_source", "penetration_source", "price_source"):
-            if not row.get(key, "").strip():
+            if not row[key].strip():
                 warnings.append(f"market row {row_number}: empty {key}")
-    if geographies != {"global", "china"}:
-        errors.append("market model must include both Global and China geographies")
-    scenario_aliases = {
-        "base": {"base", "baseline", "基准"},
-        "conservative": {"conservative", "downside", "bear", "保守", "悲观"},
-        "upside": {"upside", "bull", "optimistic", "乐观"},
-    }
-    for label, aliases in scenario_aliases.items():
-        if not scenarios.intersection(aliases):
-            errors.append(f"market model missing {label} scenario")
-    for (scenario, geography), values in years.items():
-        if len(values) < 5:
-            errors.append(f"market model needs at least five years for {scenario}/{geography}; found {len(values)}")
+    if model_format == "generic":
+        warnings.append("custom model: structure checked; reconcile formulas and material assumptions separately")
 
 
 def validate_html(path: Path, markdown: str, errors: list[str]) -> None:
@@ -225,6 +219,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--evidence-ledger", type=Path)
     parser.add_argument("--market-model", type=Path)
+    parser.add_argument("--market-format", choices=("generic", "shipment-bom"), default="generic")
+    parser.add_argument("--require-module", action="append", choices=tuple(OPTIONAL_MODULES), default=[])
     parser.add_argument("--html", type=Path)
     return parser.parse_args()
 
@@ -237,17 +233,15 @@ def main() -> None:
     headings = markdown_headings(markdown)
     validate_heading_numbers(headings, errors)
     searchable = normalized(markdown)
-    for label, terms in COVERAGE.items():
+    required = {"investment judgment", "sources"} | {OPTIONAL_MODULES[item] for item in args.require_module}
+    for label in sorted(required):
+        terms = COVERAGE[label]
         if not any(term in searchable for term in terms):
             errors.append(f"report coverage missing: {label}")
     if args.evidence_ledger:
         validate_evidence(args.evidence_ledger, errors, warnings)
-    else:
-        warnings.append("evidence ledger not supplied")
     if args.market_model:
-        validate_market(args.market_model, errors, warnings)
-    else:
-        warnings.append("market model not supplied")
+        validate_market(args.market_model, errors, warnings, args.market_format)
     if args.html:
         validate_html(args.html, markdown, errors)
     else:

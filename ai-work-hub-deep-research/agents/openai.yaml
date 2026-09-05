@@ -1,4 +1,4 @@
 interface:
   display_name: "AI Work Hub Deep Research"
   short_description: "Deep technical and industry investment research"
-  default_prompt: "Use $ai-work-hub-deep-research to build the explicitly requested independent source-backed report, reusing linked knowledge sources and adding external validation, technical analysis, market sizing, visuals, and an investment view."
+  default_prompt: "Use $ai-work-hub-deep-research to answer this research question with a source-backed report, reusing prior knowledge and choosing only the analysis, models and visuals relevant to the decision."

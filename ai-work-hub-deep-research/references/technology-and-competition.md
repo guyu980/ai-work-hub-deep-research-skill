@@ -55,7 +55,7 @@ Forecast technology progress by causal layer rather than extrapolating publicati
 - Product form: component to module, subsystem, platform, managed service, or OEM-integrated capability.
 - Commercial adoption: which tasks cross from research to pilot, paid deployment, and repeatable procurement.
 
-Build a five-year milestone table with base expectations, leading indicators, and failure signals. Separate:
+When the question concerns future development, choose a useful horizon and describe milestones and uncertainty. A five-year table is optional. Where relevant, separate:
 
 1. paper or laboratory trend;
 2. reproducible engineering trend;
