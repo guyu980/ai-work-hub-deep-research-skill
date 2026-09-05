@@ -3,7 +3,7 @@
 ## Contents
 
 1. Source hierarchy
-2. Evidence ledger
+2. Proportionate source notes
 3. Conflicts and forecast discipline
 4. Citation rules
 
@@ -20,22 +20,13 @@ Use the strongest available source for each claim:
 
 Peer review does not make a laboratory result commercially proven. A company filing does not make management guidance certain. A reputable third-party report remains one model with its own market definition.
 
-## Evidence Ledger
+## Proportionate Source Notes
 
-Maintain a CSV with at least:
+Keep citations near key claims and distinguish sourced facts, attributed opinions and analyst assumptions in the report. No routine claim-by-claim CSV or repeated provenance labels. A short table is useful when a few conflicting estimates or model inputs materially affect the conclusion.
 
-```text
-claim_id,claim,category,status,evidence_grade,source_type,source_title,source_url,publish_date,accessed_date,geography,definition_or_metric,source_value,report_use,conflict_or_caveat
-```
+Company statements and expert observations can be used as attributed inputs. Independent confirmation is warranted for material conflicts or decisive claims, not for every number. A faithful transcript establishes the speaker's statement, not the underlying business result.
 
-Recommended `status` values:
-
-- `verified`: supported by appropriate original or independent evidence;
-- `source_claim`: accurately captured but not independently verified;
-- `report_assumption`: introduced by this analysis;
-- `open`: material uncertainty or unresolved conflict.
-
-Attach a source to the smallest meaningful claim. Do not use one citation at the end of a long paragraph to imply support for every sentence.
+Legacy ledgers may remain linked to historical reports. Do not generate new ones unless the user explicitly requests detailed evidence auditing.
 
 ## Conflicts And Forecast Discipline
 

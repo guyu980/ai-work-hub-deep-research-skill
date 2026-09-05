@@ -36,8 +36,8 @@ Do not duplicate one finding across several new cards. Update existing objects w
 
 After writeback:
 
-1. Sync a changed project from its finalized state when applicable.
-2. Rebuild all generated indexes.
+1. Update the changed project card body from the finalized judgment, then sync its state fields when applicable. The sync script does not rewrite prose.
+2. Rewrite affected current-understanding sections, not merely event history. Rebuild generated indexes once after actual writes, not on read-only retrieval.
 3. Validate the graph.
 4. Report validation failures explicitly.
 5. Keep all private graph data outside the public Skill repository.
