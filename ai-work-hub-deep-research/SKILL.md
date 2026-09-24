@@ -54,6 +54,8 @@ Do not require five-year forecasts, both global and China models, TAM/SAM/SOM, p
 6. Write the report, render HTML unless excluded, and inspect the actual output. Number sections consistently without imposing a fixed chapter count.
 7. If a project conclusion changes, update the existing judgment through Diligence. Write only reusable changes to the graph, rewriting current understanding rather than merely appending events.
 
+The dated report is a research snapshot, not another live company judgment. Link its as-of date from current graph objects; material later developments update the owning source/project and current synthesis. Regenerate the full report/HTML for a requested or consequential report revision, not automatically for every news item. Use the Memory Graph Skill's shared content-batch writer so concurrent intelligence runs cannot silently overwrite research updates.
+
 For independent source searches, parallel work can help. Keep one owning agent responsible for synthesis and shared-file writes; multiple model opinions are not independent evidence.
 
 ## Sources And Models

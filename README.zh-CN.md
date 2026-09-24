@@ -50,6 +50,8 @@ ln -s "$(pwd)/ai-work-hub-deep-research-skill/ai-work-hub-deep-research" \
 
 ## 与其他 Skill 的分工
 
+带日期的报告是研究快照。后续重要变化更新对应项目/来源与图谱的当前认识，不因每条新闻自动重生成历史HTML。图谱按同类信息结构及带哈希检查的批量写回统一维护；公司现行投资决定仍只有尽调中的一份。
+
 - `ai-work-hub-diligence`：维护公司项目的一份持续判断、项目状态和后续尽调。
 - `ai-work-hub-deep-research`：完成技术、产业、市场、竞争和投资专题的深度研究。
 - `ai-work-hub-memory-graph`：接收并轻量整理非项目专家访谈/主题资料，检索和沉淀稀疏、可复用的项目、赛道、技术、估值、事件和人物知识。

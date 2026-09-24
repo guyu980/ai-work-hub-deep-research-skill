@@ -16,6 +16,8 @@ Use retrieved context to find:
 
 Retrieval is context, not authority. Recheck time-sensitive claims.
 
+Use the question and business/technical mechanisms, not just sector names. Retrieval also covers running judgments and structured GitHub radar candidates; use them as source pointers, not permission to open a new diligence task. Preserve observation dates and distinguish old research snapshots from current project decisions.
+
 ## Route After The Report Is Final
 
 | Research increment | Direct destination |
@@ -36,8 +38,10 @@ Do not duplicate one finding across several new cards. Update existing objects w
 
 After writeback:
 
-1. Update the changed project card body from the finalized judgment, then sync its state fields when applicable. The sync script does not rewrite prose.
-2. Rewrite affected current-understanding sections, not merely event history. Rebuild generated indexes once after actual writes, not on read-only retrieval.
+1. Refresh project headers from finalized state when applicable, then reread the card and update its substance. The sync script does not rewrite prose.
+2. Rewrite affected current-understanding sections using the same-type structure in the graph schema. Use `write_graph.py` with expected hashes, rereading and merging on conflict. The batch writer rebuilds once; no rebuild is needed for read-only work.
 3. Validate the graph.
 4. Report validation failures explicitly.
 5. Keep all private graph data outside the public Skill repository.
+
+Keep operating metrics and valuations comparable: period, unit, actual/forecast and source near the fact; equity, debt and acquisition consideration in separate groups. Current project prices/decisions stay in the single project judgment. A research snapshot may retain its dated recommendation without becoming a parallel current decision.

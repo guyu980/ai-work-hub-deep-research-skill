@@ -58,6 +58,8 @@ Use $ai-work-hub-deep-research, but keep the work in chat and do not create file
 
 ## Companion Skills
 
+A dated report is a research snapshot. Material later developments update the owning project/source and current graph synthesis; they do not automatically regenerate every historical HTML report. Graph updates follow the shared same-type content structure and hash-checked batch writer. Current company decisions stay in Diligence.
+
 - `ai-work-hub-diligence` owns the evolving company judgment, project state, and follow-up diligence.
 - `ai-work-hub-memory-graph` ingests and lightly analyzes non-project interviews or thematic sources, then retrieves and stores sparse reusable project, sector, technical, valuation, event, and people knowledge.
 
