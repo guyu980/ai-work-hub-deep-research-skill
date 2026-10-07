@@ -16,7 +16,7 @@ Use retrieved context to find:
 
 Retrieval is context, not authority. Recheck time-sensitive claims.
 
-Use the question and business/technical mechanisms, not just sector names. Retrieval also covers running judgments and structured GitHub radar candidates; use them as source pointers, not permission to open a new diligence task. Preserve observation dates and distinguish old research snapshots from current project decisions.
+Use the question and business/technical mechanisms, not just sector names. Retrieval also covers running judgments, structured GitHub radar candidates and existing cross-task sourcing reviews; use them as source pointers, not permission to open a new diligence task. Inspect date_basis and linked older versions. Preserve observation dates and distinguish old research snapshots from current project decisions.
 
 ## Route After The Report Is Final
 
@@ -33,6 +33,8 @@ Use the question and business/technical mechanisms, not just sector names. Retri
 | Low-signal or one-off detail | Report archive only |
 
 Do not duplicate one finding across several new cards. Update existing objects when possible. Keep source detail in `知识来源/`, report analysis and citations in the report archive, and only compressed reusable conclusions in graph cards. A source does not need a graph card or source index.
+
+Rewrite by assumption/mechanism, retaining material support and counterarguments. Repeated concerns without new implications need no extra paragraph or action. Select valuation comparables for business model, maturity, instrument and denominator, not just sector labels. A research report with a different decision question remains useful even if a newer study overlaps.
 
 ## Completion
 
