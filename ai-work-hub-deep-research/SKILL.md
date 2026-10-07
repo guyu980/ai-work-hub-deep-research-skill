@@ -1,89 +1,69 @@
 ---
 name: ai-work-hub-deep-research
-description: Use when the user explicitly requests deep research or a formal systematic industry, technology, value-chain or thematic report. Choose the research modules needed for the decision and produce source-backed Markdown and HTML. A single expert interview or source analysis belongs to ai-work-hub-memory-graph; company-only diligence belongs to ai-work-hub-diligence.
+description: Produce a source-backed formal industry, technology or thematic study when deep research or a systematic report is explicitly requested. Select analysis for the decision and deliver Markdown plus HTML. Ordinary interviews/sources belong to Memory Graph; company updates belong to Diligence.
 ---
 
 # AI Work Hub Deep Research
 
-## Purpose And Scope
+## Scope And Ownership
 
-Produce an independent research view that answers a defined decision question. Go deep on the mechanisms and variables that matter; do not inflate a focused study into a comprehensive industry audit.
+Answer a defined decision question independently. Infer the useful scope, geography, horizon and exclusions from the request; ask only when ambiguity materially changes the work. An explicit study can be extensive. A focused question does not require an industry audit.
 
-Activate only for an explicit deep-research or formal-report request. Ordinary expert interviews, thematic materials and bounded external checks remain in the Memory Graph workflow, with persistence unless the user excludes it.
+- Project-linked: inherit the latest company judgment/state; output under `项目/<name>/输出文档/03_研究与分析/`, not another running judgment.
+- Standalone: output under `行业研究/<theme>/`.
+- Reusable interviews/thematic inputs: preserve once in `知识来源/` via Memory Graph and link their core notes.
+- Chat-only: no file writes.
+- Bounded source checks and ordinary interviews: stay in the owning Diligence/Memory Graph workflow, not this Skill.
 
-Start by defining the question, useful deliverable, relevant geography/horizon and exclusions. Infer these from the request where clear; ask only when the ambiguity materially changes the work. Do not require another approval merely to proceed with already requested research.
-
-## Source Ownership
-
-- Project-linked: read the current project judgment, state and relevant sources first. Store research under `项目/<项目名>/输出文档/03_研究与分析/`, never as a second running judgment.
-- Standalone: store under `行业研究/<主题>/`.
-- Reusable interviews and thematic materials: preserve once in `知识来源/`, then link rather than copy them.
-- Chat-only: do not create or modify files.
-
-Initialize only when a new report object is needed:
-
-```bash
-python3 <skill_dir>/scripts/init_deep_research.py \
-  --workspace-root "<workspace_root>" --industry "<主题>"
-```
-
-Add `--project-name "<项目名>"` for project-linked work. The initializer creates a minimal report and state, not an evidence ledger, empty market model or unneeded figure directory. It refuses to overwrite an existing report.
-
-## Choose The Analysis
-
-Select modules by the decision question. A broad industry study can use all of them; a narrow technical or competitive study should omit irrelevant ones.
-
-| Question | Useful work | Read when applicable |
-| --- | --- | --- |
-| Which route works, where and why? | Mechanism, system boundary, substitutes, engineering trade-offs and bottlenecks | references/technology-and-competition.md |
-| Who captures value? | Customer budget, workflow, competition, incumbent/self-build alternatives and commercialization | references/research-method.md |
-| How large or valuable can this become? | Causal demand/revenue model, important sensitivities and comparable economics | references/market-sizing.md |
-| What would change the view? | Strongest opposing explanation, material source conflicts and decisive uncertainty | references/source-and-evidence.md |
-| How does this connect to prior work? | Relevant projects, source notes, sectors, technical and valuation objects | references/memory-graph-linkage.md |
-| How should the report communicate? | Only useful figures, Markdown and responsive HTML | references/html-and-visuals.md |
-
-Do not require five-year forecasts, both global and China models, TAM/SAM/SOM, physical signal chains or every competitor category when they do not answer the requested question. Conversely, do not shorten an explicitly requested comprehensive study merely to fit a small template.
+Read useful existing studies before creating a new report. Compare the decision question, substantive as-of date and changed assumptions, not just filenames. An older study may answer a different question; do not discard it merely because a newer report mentions the same sector.
 
 ## Research Loop
 
-1. Read relevant existing work and supplied sources; retrieve prior knowledge from Memory Graph and core source notes where available.
-2. Identify the central explanation, its strongest alternative and the missing information that could change the result.
-3. Research the relevant modules. Prefer original publications, official documentation, filings and authoritative reporting. Keep company statements and expert opinions attributed; they can be useful without turning each into an independent verification task.
-4. Resolve material conflicts by comparing definitions, conditions and dates. A citation shows provenance, not automatic truth. Do not commission tests, audits, company data rooms or reproduction unless necessary for the question and within the requested scope.
-5. Form the current view, explain what supports and challenges it, and identify only useful next actions. Stop expanding when additional detail no longer changes the answer; disclose remaining material limits.
-6. Write the report, render HTML unless excluded, and inspect the actual output. Number sections consistently without imposing a fixed chapter count.
-7. If a project conclusion changes, update the existing judgment through Diligence. Write only reusable changes to the graph, rewriting current understanding rather than merely appending events.
+1. Read supplied sources, relevant current project files and compact Memory Graph matches.
+2. Identify the central explanation, strongest alternative and consequential uncertainty.
+3. Research the relevant modules below. Prefer original publications, official documents, filings and authoritative reporting; retain attributed company/expert claims without turning every input into a verification task.
+4. Reconcile material differences in definition, period, system boundary or assumptions. Stop adding detail when it no longer changes the answer; disclose remaining material limits.
+5. Write the conclusion and supporting analysis, render HTML unless excluded, and inspect the actual deliverable.
+6. If it changes a company conclusion, update the same judgment through Diligence. Route reusable changes through Memory Graph's shared writer, revising current synthesis rather than appending every finding.
 
-The dated report is a research snapshot, not another live company judgment. Link its as-of date from current graph objects; material later developments update the owning source/project and current synthesis. Regenerate the full report/HTML for a requested or consequential report revision, not automatically for every news item. Use the Memory Graph Skill's shared content-batch writer so concurrent intelligence runs cannot silently overwrite research updates.
+No default company data room, reproduction, engineering audit or claim-by-claim Evidence Ledger. Models and visualizations are tools for the question, not mandatory artifacts.
 
-For independent source searches, parallel work can help. Keep one owning agent responsible for synthesis and shared-file writes; multiple model opinions are not independent evidence.
+## Select Useful Modules
 
-## Sources And Models
+| Decision question | Reference |
+| --- | --- |
+| Which technical route works, under what constraints and alternatives? | [technology-and-competition.md](references/technology-and-competition.md) |
+| Who buys and captures value; what threatens the thesis? | [research-method.md](references/research-method.md) |
+| What economic scale or value is plausible? | [market-sizing.md](references/market-sizing.md) |
+| Which source conflicts/uncertainties matter? | [source-and-evidence.md](references/source-and-evidence.md) |
+| What prior work should be reused or revised? | [memory-graph-linkage.md](references/memory-graph-linkage.md) |
+| How should the report render? | [html-and-visuals.md](references/html-and-visuals.md) |
 
-Cite the key facts and judgments near their use; make analyst assumptions visible. Maintain a short sources section and, only when helpful, a table of material conflicting estimates or model inputs. No routine claim-by-claim Evidence Ledger.
+Read only relevant references. Do not require five-year/global-China forecasts, TAM/SAM/SOM, physical signal chains or all competitor classes when they do not answer the request.
 
-When a quantitative model is useful, choose the economic unit, geography and horizon that fit. Use actual inputs where available, label source claims and analyst assumptions, check arithmetic and focus sensitivity on consequential drivers. A five-year global/China model is an option or an explicit deliverable, not a universal requirement.
+When a quantitative model helps, choose the economic unit and horizon, mark actuals/source claims/analyst assumptions, check arithmetic and focus sensitivity on meaningful drivers. `forecast_market.py` supports shipment/BOM economics only; use an appropriate model for other businesses.
 
-`forecast_market.py` supports shipment/BOM economics only. Other business models can use their own CSV, spreadsheet or code with documented formulas; never force software or services into a hardware schema.
+## Artifacts And Dates
 
-## Deliverable And Acceptance
-
-A useful report normally includes the decision question, current view, relevant analysis, strongest counterargument, material uncertainties and sources. Organize to fit the reader; do not create empty sections, risk lists or tasks just to fill a template.
-
-Render using the existing visual system:
+Initialize only a genuinely new report object; the initializer refuses to overwrite a report:
 
 ```bash
-python3 <skill_dir>/scripts/render_report.py \
-  --input "<report.md>" --output "<report.html>" \
-  --title "<report title>" --subtitle "<decision context>"
-python3 <skill_dir>/scripts/validate_research.py \
-  --report "<report.md>" --html "<report.html>"
+python3 <skill_dir>/scripts/init_deep_research.py --workspace-root "<root>" --industry "<theme>"
 ```
 
-Add `--market-model "<model.csv>"` only when a model was produced; add `--market-format shipment-bom` for the bundled calculator's format. Use repeated `--require-module` arguments only for modules actually commissioned. Legacy evidence-ledger files can still be checked when explicitly supplied, but are never required or generated by default.
+Add `--project-name "<name>"` for project-linked work. It creates a minimal report/state, not ledgers, unused models or empty figure folders.
 
-Check that the report answers the question, decisive statements are supported at the stated source level, important calculations reconcile and links/figures render. Automated checks validate structure, not investment reasoning. Rebuild and validate the graph once if it changed, not for a read-only research consultation.
+The report is a **dated research snapshot**. Record its actual incorporated information cutoff; formatting, rereading or index rebuilding does not refresh it. Current Graph understanding and company judgments evolve separately. Regenerate the report/HTML for a requested or consequential revision, not every news item. Retain links to useful prior snapshots and explain material assumption changes.
 
-## Privacy
+A useful report exposes the question, current view, important mechanisms/economics, strongest counterargument, material uncertainties and sources. Adapt chapters to the reader; omit empty lists and low-value tasks. Cite decisive statements near use, with a concise sources section and only helpful model/conflict tables.
 
-The public skill contains generic methods, tools and fictional examples only. Project material, research, source notes, Memory Graph and private delivery settings stay in the user's workspace.
+## Acceptance
+
+```bash
+python3 <skill_dir>/scripts/render_report.py --input "<report.md>" --output "<report.html>" --title "<title>" --subtitle "<decision context>"
+python3 <skill_dir>/scripts/validate_research.py --report "<report.md>" --html "<report.html>"
+```
+
+Add model/module arguments only for commissioned artifacts. Legacy ledgers may be checked if explicitly supplied; they are not required or generated by default.
+
+Inspect actual rendering, figures/links and meaningful arithmetic; automated checks do not prove investment reasoning. If Graph changed, use its hash-checked writer, validate once and read back current-view sections. Do not change formal company decisions through a report sync or publish private inputs to public Skill repositories.

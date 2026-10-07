@@ -2,64 +2,51 @@
 
 [English](README.md)
 
-面向投资决策的 Codex 深度研究 Skill。既可以从一个在研项目切入，也可以直接研究一个行业、技术主题、产业链或跨项目专题。
+**正式行业与技术研究**。在明确需要深度研究或系统报告时，围绕决策问题选择技术、竞争、商业和估值分析，交付 Markdown 与可浏览的 HTML。普通访谈和外部查证不自动升级为正式研究。
 
-## 按问题研究
+## 安装与更新
 
-下面列的是可选能力，不是每次必做清单。技术路线比较不自动附带五年市场预测；重要机制充分分析，无关模块直接省略。关键结论就近引用来源，必要时补充少量重要假设或口径争议，不默认建立逐条 Evidence Ledger、向公司索取全套材料或安排工程复现。
-
-初始化只生成精简报告与状态；项目关联报告进入 `输出文档/03_研究与分析/`，模型和图示按需创建。校验与实际要求的模块、产物匹配。已有历史模型与来源仍可使用。模型选择在运行配置里设置，Skill 本身保持通用。
-
-## 能做什么
-
-- 重建系统边界、底层技术原理和完整信号链。
-- 用同一套工程与商业指标比较技术路线、替代方案和“不使用专用产品”的架构。
-- 分别判断未来五年的论文前沿、工程瓶颈、制造成本、接口标准、产品形态和商业采用趋势。
-- 梳理全球与中国竞争格局，同时覆盖传统厂商、成熟专业公司、创业公司、OEM 自研和开源/学术生态。
-- 建立全球与中国未来五年自下而上市场模型，包含保守、基准、乐观情景及敏感性分析。
-- 输出投资判断、估值含义、证明门槛、反方观点和可能推翻结论的证据。
-- 生成带 SVG 图示、响应式目录、窄屏适配和本地相对链接的 HTML 阅读版。
-- 在安装配套 Skill 时，与私有 AI Work Hub Memory Graph 联动。
-- 优先读取工作区已有的专家访谈和主题资料，并通过链接复用而不是重复保存。
-
-权威论文、标准、行业组织和可靠三方报告是证据输入，不是结论代理。流程会区分事实、来源观点、外部预测和本报告假设，再独立重建判断。
-
-## 安装
+也可以直接让 Codex 从此 GitHub 仓库安装 Skill，并先检查是否已有安装。推荐 Git 克隆加单个软链接，让自用版和分享版使用同一源码：
 
 ```bash
 mkdir -p ~/Documents/skills-repos ~/.codex/skills
 cd ~/Documents/skills-repos
 git clone https://github.com/guyu980/ai-work-hub-deep-research-skill.git
-ln -s "$(pwd)/ai-work-hub-deep-research-skill/ai-work-hub-deep-research" \
-  ~/.codex/skills/ai-work-hub-deep-research
+ln -s "$(pwd)/ai-work-hub-deep-research-skill/ai-work-hub-deep-research" ~/.codex/skills/ai-work-hub-deep-research
 ```
 
-如果目标路径已经存在，先检查后再处理。安装后如未立即显示，可重新加载 Codex。
+已有同名目录时先检查，不覆盖安装，避免出现重复 Skill。Python 脚本需要 Python 3.10+；Graph 共享锁支持 macOS/Linux。安装后重新加载 Codex。更新时：
 
-## 使用示例
+```bash
+cd ~/Documents/skills-repos/ai-work-hub-deep-research-skill
+git pull --ff-only
+```
+
+软链接立即使用同一份代码，无需复制另一份 Skill。私人工作区与仓库分开。
+
+## 日常使用
 
 ```text
-使用 $ai-work-hub-deep-research 深入研究机器人触觉传感：讲清底层原理和不同路线，分析全球与中国竞格、未来五年技术趋势及市场规模，画出关键图示，并给出投资判断。
+用 $ai-work-hub-deep-research 研究这个技术方向，重点解释路线取舍、客户价值和投资机会。
+基于项目材料做独立行业研究，说明哪些假设支持或反对当前判断。
+仅在对话中研究，不生成文件。
 ```
 
-项目关联模式：
+先复用已有判断、研究及专家来源，再围绕问题开展分析。机制、竞争、市场模型、技术趋势与估值是可选模块，不机械要求每份报告都有五年预测或完整市场审计。重要研究可充分展开；不重复逐条证据记账，也不默认要求工程复现。
 
-```text
-使用 $ai-work-hub-deep-research 研究这个项目所在行业。先读项目资料，再独立重建行业逻辑，并说明公司必须证明什么。
+项目相关报告放在 `输出文档/03_研究与分析/`，独立报告放在 `行业研究/<主题>/`。初始化只创建需要的报告与状态；图表、模型按需生成。默认 HTML 沿用简洁的斯坦福红视觉系统。
+
+每份报告是有明确信息截至日的研究快照。日后普通新闻更新现行 Graph 或项目判断，不自动重做所有历史报告；重大或明确要求的修订再更新 Markdown 和 HTML。旧研究若回答不同问题仍保留。
+
+```bash
+python3 ai-work-hub-deep-research/scripts/render_report.py --input "<报告.md>" --output "<报告.html>" --title "<标题>"
+python3 ai-work-hub-deep-research/scripts/validate_research.py --report "<报告.md>" --html "<报告.html>"
 ```
 
-## 与其他 Skill 的分工
+## 三个 Skill 如何衔接
 
-带日期的报告是研究快照。后续重要变化更新对应项目/来源与图谱的当前认识，不因每条新闻自动重生成历史HTML。图谱按同类信息结构及带哈希检查的批量写回统一维护；公司现行投资决定仍只有尽调中的一份。
+[尽调](https://github.com/guyu980/ai-work-hub-diligence-skill)维护单公司现行判断；[Memory Graph](https://github.com/guyu980/ai-work-hub-memory-graph-skill)整理非项目来源和跨项目记忆；[深度研究](https://github.com/guyu980/ai-work-hub-deep-research-skill)负责明确要求的正式报告。安装同伴 Skill 可以联动，也可单独使用。新闻与 GitHub 发现由已授权的自动化任务执行，Skill 本身不自动创建定时任务。
 
-- `ai-work-hub-diligence`：维护公司项目的一份持续判断、项目状态和后续尽调。
-- `ai-work-hub-deep-research`：完成技术、产业、市场、竞争和投资专题的深度研究。
-- `ai-work-hub-memory-graph`：接收并轻量整理非项目专家访谈/主题资料，检索和沉淀稀疏、可复用的项目、赛道、技术、估值、事件和人物知识。
+公开仓库只保存通用机制、脚本和虚拟案例。实际项目、知识库、报告、私人关注名单、交付地址和凭据保留本地，不上传。贡献通过 PR，由维护者审阅合并。模型选择属于运行设置，Skill 不绑定某个模型。
 
-`知识来源/` 是研究输入层，不是第四种报告模式。只有用户明确要求深度研究或正式系统报告时才调用本 Skill，普通外部查证留在原工作流；原始访谈和核心整理仍保存在唯一的知识来源文件夹中。行业报告是独立交付物；如果报告改变项目判断，应在报告完成后通过 diligence 工作流更新原有项目判断，而不是新增第二份判断。
-
-## 公私边界
-
-本公开仓库只包含通用指令、脚本、参考方法和模板。不得提交真实 BP、访谈原文、客户信息、项目判断、凭据、含私有数据的模型或生成后的 Memory Graph 内容。
-
-许可证：[MIT](LICENSE)
+[Agent 执行入口](ai-work-hub-deep-research/SKILL.md) · [MIT](LICENSE)
