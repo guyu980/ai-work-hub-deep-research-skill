@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 966" width="640" height="966" role="img" aria-labelledby="title desc">
+<title id="title">并行处理：重叠独立工作，缩短等待</title>
+<desc id="desc">完全虚构的票据归档例子。上传2分钟、识别6分钟、规则4分钟、匹配3分钟、复核5分钟。串行需20分钟；上传后识别与规则读取并行需16分钟。规则在第6分钟完成，等到第8分钟识别完成才匹配。</desc>
+<defs><pattern id="wait" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 2 L2 -2 M0 8 L8 0 M6 10 L10 6" stroke="#A7A39A" stroke-width="1.4"/></pattern></defs>
+<g font-family="PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="640" height="966" rx="4" fill="#FBFAF8" stroke="none" />
+<rect x="32" y="32" width="5" height="32" rx="0" fill="#8C1515" stroke="none" />
+<text x="52" y="57" font-size="28" fill="#2E2D29" font-weight="700" text-anchor="start">重叠独立工作，缩短等待</text>
+<text x="32" y="98" font-size="24" fill="#66635D" font-weight="400" text-anchor="start">同一批票据 · 教学假设 · 单位：分钟</text>
+<text x="32" y="154" font-size="26" fill="#2E2D29" font-weight="700" text-anchor="start">原来：逐项执行</text>
+<text x="604" y="154" font-size="28" fill="#8C1515" font-weight="700" text-anchor="end">20 分钟</text>
+<line x1="180" y1="202" x2="180" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="180" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">0</text>
+<line x1="260" y1="202" x2="260" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="260" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">4</text>
+<line x1="340" y1="202" x2="340" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="340" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">8</text>
+<line x1="420" y1="202" x2="420" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="420" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">12</text>
+<line x1="500" y1="202" x2="500" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="500" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">16</text>
+<line x1="580" y1="202" x2="580" y2="445" stroke="#D8D6D0" stroke-width="1" />
+<text x="580" y="194" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">20</text>
+<text x="32" y="238" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">上传</text>
+<rect x="180" y="212" width="40" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="200.0" y="237" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="32" y="287" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">识别票面</text>
+<rect x="220" y="261" width="120" height="35" rx="4" fill="#8C1515" stroke="none" />
+<text x="280.0" y="286" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<text x="32" y="336" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">读取规则</text>
+<rect x="340" y="310" width="80" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="380.0" y="335" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<text x="32" y="385" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">字段匹配</text>
+<rect x="420" y="359" width="60" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="450.0" y="384" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<text x="32" y="434" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">人工复核</text>
+<rect x="480" y="408" width="100" height="35" rx="4" fill="#2E2D29" stroke="none" />
+<text x="530.0" y="433" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<text x="32" y="548" font-size="26" fill="#2E2D29" font-weight="700" text-anchor="start">调整：两项同时执行</text>
+<text x="604" y="548" font-size="28" fill="#8C1515" font-weight="700" text-anchor="end">16 分钟</text>
+<line x1="180" y1="596" x2="180" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="180" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">0</text>
+<line x1="260" y1="596" x2="260" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="260" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">4</text>
+<line x1="340" y1="596" x2="340" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="340" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">8</text>
+<line x1="420" y1="596" x2="420" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="420" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">12</text>
+<line x1="500" y1="596" x2="500" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="500" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">16</text>
+<line x1="580" y1="596" x2="580" y2="839" stroke="#D8D6D0" stroke-width="1" />
+<text x="580" y="588" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">20</text>
+<text x="32" y="632" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">上传</text>
+<rect x="180" y="606" width="40" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="200.0" y="631" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="32" y="681" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">识别票面</text>
+<rect x="220" y="655" width="120" height="35" rx="4" fill="#8C1515" stroke="none" />
+<text x="280.0" y="680" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<text x="32" y="730" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">读取规则</text>
+<rect x="220" y="704" width="80" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="260.0" y="729" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<text x="32" y="779" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">字段匹配</text>
+<rect x="340" y="753" width="60" height="35" rx="4" fill="#A7A39A" stroke="none" />
+<text x="370.0" y="778" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<text x="32" y="828" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">人工复核</text>
+<rect x="400" y="802" width="100" height="35" rx="4" fill="#2E2D29" stroke="none" />
+<text x="450.0" y="827" font-size="22" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<rect x="300" y="704" width="40" height="35" rx="0" fill="url(#wait)" stroke="#D8D6D0" />
+<text x="391" y="730" font-size="22" fill="#66635D" font-weight="400" text-anchor="start">等 2 分钟</text>
+<line x1="340" y1="690" x2="340" y2="753" stroke="#8C1515" stroke-width="2" />
+<line x1="32" y1="480" x2="608" y2="480" stroke="#D8D6D0" stroke-width="1" />
+<text x="32" y="898" font-size="24" fill="#2E2D29" font-weight="600" text-anchor="start">规则读取先完成，但匹配仍需等待识别。</text>
+<text x="32" y="936" font-size="23" fill="#66635D" font-weight="400" text-anchor="start">条长表示耗时；斜纹表示完成后的等待。</text>
+</g></svg>

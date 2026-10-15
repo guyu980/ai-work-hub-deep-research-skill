@@ -2,7 +2,7 @@
 
 [中文说明](README.zh-CN.md)
 
-**Formal industry and technology research.** For explicitly requested deep research or systematic reports, choose technical, competitive and economic analysis for the decision, with Markdown and browsable HTML.
+**Formal industry and technology research.** For explicitly requested deep research or systematic reports, explain technical mechanisms plainly, develop evidence-backed views on trends and value capture, and deliver illustrated Markdown and browsable HTML.
 
 ## Install And Update
 
@@ -34,9 +34,17 @@ Keep the study in chat only.
 
 Reuse current project reasoning, prior research and expert sources. Mechanisms, competition, market models, technology trends and valuation are optional modules selected for the question, not mandatory five-year forecasts or audits. Important studies can be extensive without claim-by-claim ledgers or default engineering reproduction.
 
-Project reports go under `输出文档/03_研究与分析/`; standalone studies under `行业研究/<theme>/`. Initialization creates only the minimal report/state. Models and figures are on demand; responsive HTML uses the existing restrained cardinal-red design.
+A deep-research request sets a professional research standard. Build a question hierarchy, investigate consequential original evidence, reconcile competing explanations and definitions, and develop independent quantitative reasoning where it matters. Use specialist workstreams and a skeptical reviewer when available, with one owner synthesizing the work. Revisit weak inferences before delivery; do not trade away necessary analysis for speed or token savings. Completion depends on substantive coverage and defensible conclusions, not pages, citations or claimed analyst-hours.
+
+Explain difficult ideas through concrete examples and necessary technical vocabulary. Develop the central argument by comparing plausible explanations and tracing how changing constraints affect customers, competition and profits. A scenario table alone does not establish which outcome is currently better supported.
+
+Plan visuals alongside the argument: mechanism drawings, cutaways, step sequences, before/after comparisons, bottleneck maps, value flows and conditional scenarios. Use parameter controls, animation or 3D when they make causality, time or spatial relationships easier to understand; retain useful static views for print and sharing. Choose the form for the subject without a fixed figure quota. See the [fictional illustrated example](ai-work-hub-deep-research/examples/receipt-workflow.md).
+
+Project reports go under `输出文档/03_研究与分析/`; standalone studies under `行业研究/<theme>/`. Initialization creates only the minimal report/state. Generate the figures and models that the study needs; responsive HTML uses the existing restrained cardinal-red design. Local interactive companions remain linked to the durable report.
 
 Reports are dated research snapshots. Routine later news updates current Graph/project understanding, not every historical HTML. Regenerate for a consequential or requested revision; retain older studies that answer different questions.
+
+Before delivery, review whether a reader can explain the mechanism and follow the evidence to a useful current view. Inspect rendered figures and exercise interactions. Automated validation checks structure and arithmetic constraints, not reasoning quality or comprehensibility.
 
 ```bash
 python3 ai-work-hub-deep-research/scripts/render_report.py --input "<report.md>" --output "<report.html>" --title "<title>"

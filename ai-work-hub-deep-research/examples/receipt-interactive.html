@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>为什么识别更快，归档仍然慢？｜交互假设演示</title>
+  <style>
+    :root { color-scheme: light; --paper:#f5f4f1; --surface:#fbfaf8; --ink:#2e2d29; --muted:#66635d; --line:#d8d6d0; --accent:#8c1515; --tint:#f1dfdf; }
+    @media (prefers-color-scheme:dark) { :root { color-scheme:dark; --paper:#171716; --surface:#20201c; --ink:#f5f4f1; --muted:#aaa89f; --line:#3f3e38; --accent:#e7a0a7; --tint:#3b2426; } }
+    * { box-sizing:border-box; }
+    [hidden] { display:none!important; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    main { max-width:1120px; margin:0 auto; padding:48px 32px 64px; }
+    .eyebrow { color:var(--accent); font-size:13px; font-weight:700; letter-spacing:.08em; }
+    h1 { max-width:800px; font-size:clamp(30px,4vw,44px); line-height:1.25; margin:14px 0 20px; }
+    h2 { font-size:22px; line-height:1.4; margin:0 0 18px; }
+    p { margin:12px 0; }
+    .deck { max-width:780px; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:290px minmax(0,1fr); gap:24px; align-items:start; margin:32px 0; }
+    .panel { border:1px solid var(--line); border-radius:6px; padding:26px; background:var(--surface); }
+    .controls { border-top:4px solid var(--accent); }
+    .control { margin:24px 0; }
+    label { display:block; font-weight:600; }
+    .input-value { color:var(--accent); font-weight:700; }
+    input[type=range] { width:100%; margin:14px 0 0; accent-color:var(--accent); }
+    input[type=checkbox] { width:20px; height:20px; margin:0 10px 0 0; accent-color:var(--accent); }
+    .switch { display:flex; align-items:center; }
+    .hint { font-size:14px; color:var(--muted); margin-top:7px; }
+    button { background:transparent; color:var(--accent); padding:8px 16px; border:1px solid var(--accent); border-radius:4px; font:inherit; cursor:pointer; }
+    :focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+    .metrics { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding-bottom:22px; border-bottom:1px solid var(--line); }
+    .metric-label { color:var(--muted); font-size:14px; }
+    .metric-value { font-size:38px; font-weight:700; line-height:1.4; }
+    .metric-value small { font-size:16px; font-weight:400; }
+    .primary { color:var(--accent); }
+    .formula { font-size:16px; margin-top:20px; }
+    .insight { border-left:4px solid var(--accent); background:var(--tint); padding:14px 17px; margin:20px 0 0; }
+    .chart-wrap { overflow-x:auto; margin:18px -8px 0; background:#fbfaf8; border:1px solid var(--line); border-radius:4px; }
+    svg { display:block; width:100%; min-width:520px; height:auto; }
+    .fallback img { width:100%; height:auto; }
+    .scroll-hint { display:none; font-size:13px; color:var(--muted); }
+    .foot { max-width:850px; font-size:15px; color:var(--muted); }
+    .foot strong { color:var(--ink); }
+    @media(max-width:850px) { main { padding:28px 18px 44px; } .grid { grid-template-columns:1fr; } .panel { padding:22px; } .controls { display:grid; grid-template-columns:1fr 1fr; gap:0 26px; } .controls h2,.controls .switch,.controls .fixed,.controls .reset { grid-column:1/-1; } .control { margin:10px 0 22px; } }
+    @media(max-width:560px) { .controls { display:block; } .metric-value { font-size:32px; } .scroll-hint { display:block; } }
+    @media print { :root { color-scheme:light; --paper:#fff; --surface:#fff; --ink:#000; --muted:#444; --line:#ccc; --accent:#8c1515; --tint:#f5eeee; } main { max-width:none; padding:0; } .grid { display:block; margin:18px 0; } .controls,.scroll-hint { display:none; } .panel { padding:14px; } svg { min-width:0; width:100%; } .chart-wrap { overflow:visible; } h1 { font-size:26px; } .chart-wrap,.insight { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">机制探索 / 完全虚构的教学假设</div>
+  <h1>为什么识别更快，<br>归档仍然慢？</h1>
+  <p class="deck">让同一批票据经历不同流程。先把识别从 6 分钟调到 2 分钟，再切换并行执行，观察时间在哪个环节省下来，又在哪里停止变化。</p>
+  <noscript><p>交互需要 JavaScript。静态图仍完整展示默认假设：串行 20 分钟，并行 16 分钟。</p><div class="fallback"><img src="receipt-parallel.svg" alt="默认假设的静态时间图：识别与规则并行后，一批任务从20分钟缩短到16分钟。"></div></noscript>
+  <div class="grid" id="explorer" hidden>
+    <section class="panel controls" aria-labelledby="controls-title">
+      <h2 id="controls-title">改变假设</h2>
+      <div class="control">
+        <label for="recognition">识别票面：<output class="input-value" id="recognition-value" for="recognition">6</output> 分钟</label>
+        <input id="recognition" type="range" min="1" max="12" step="0.5" value="6" aria-describedby="recognition-hint">
+        <p id="recognition-hint" class="hint">从 6 调到 4，再继续往下，比较全程结果。</p>
+      </div>
+      <div class="control">
+        <label for="review">人工复核：<output class="input-value" id="review-value" for="review">5</output> 分钟</label>
+        <input id="review" type="range" min="0" max="10" step="0.5" value="5">
+      </div>
+      <label class="switch" for="parallel"><input id="parallel" type="checkbox" checked>识别与规则同时开始</label>
+      <p class="hint fixed">固定假设：上传 2 分钟，规则读取 4 分钟，字段匹配 3 分钟。规则可在识别完成前读取。</p>
+      <div class="reset"><button id="reset" type="button">恢复默认假设</button></div>
+    </section>
+    <section class="panel" aria-labelledby="result-title">
+      <h2 id="result-title">同一批票据，何时完成？</h2>
+      <div class="metrics">
+        <div><div class="metric-label">当前假设用时</div><div class="metric-value primary"><output id="total">16</output> <small>分钟</small></div></div>
+        <div><div class="metric-label">相对同参数串行节省</div><div class="metric-value"><output id="saved">4</output> <small>分钟</small></div></div>
+      </div>
+      <p class="formula" id="formula"></p>
+      <div class="chart-wrap" tabindex="0" role="region" aria-label="任务时间图，窄屏可横向滚动">
+        <svg id="timeline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="chart-title chart-desc"></svg>
+      </div>
+      <p class="scroll-hint">横向滑动查看时间轴；正文另有适合整页阅读的静态图。</p>
+      <div class="insight" role="status" aria-live="polite" aria-atomic="true" id="insight"></div>
+    </section>
+  </div>
+  <div class="foot">
+    <p><strong>这张图能回答什么：</strong>给定工作依赖与时长，一批文件多久完成、哪些等待可以重叠。红色是识别，深灰是复核，斜纹表示某项工作完成后等待另一项。</p>
+    <p><strong>不能据此推断什么：</strong>真实产品性能、实际市场趋势或每小时产能。模型忽略资源争用、返工、波动和多批调度；商业利润还需要竞争、付费意愿和可替代性的证据。</p>
+    <p>所有数值均为教学假设。页面只使用本地 HTML、SVG 与 JavaScript；可打印当前参数下的结果。时间轴固定为 0—32 分钟，改变参数不会悄悄改变比例尺。</p>
+  </div>
+</main>
+<script>
+(() => {
+  const get = id => document.getElementById(id);
+  const recognition = get('recognition');
+  const review = get('review');
+  const parallel = get('parallel');
+  const n = value => Number(value).toLocaleString('zh-CN', {maximumFractionDigits:1});
+  const x = minutes => 180 + minutes * 13;
+  const svgText = (px,py,label,size=22,color='#2E2D29',weight=400,anchor='start') => `<text x="${px}" y="${py}" font-size="${size}" fill="${color}" font-weight="${weight}" text-anchor="${anchor}">${label}</text>`;
+  function render() {
+    const r = Number(recognition.value), h = Number(review.value), concurrent = parallel.checked;
+    const rulesStart = concurrent ? 2 : 2 + r;
+    const matchStart = concurrent ? 2 + Math.max(r,4) : 2 + r + 4;
+    const total = matchStart + 3 + h;
+    const serial = 2 + r + 4 + 3 + h;
+    get('recognition-value').textContent = n(r);
+    get('review-value').textContent = n(h);
+    get('total').textContent = n(total);
+    get('saved').textContent = n(serial-total);
+    get('formula').textContent = concurrent ? `2 + max(${n(r)}, 4) + 3 + ${n(h)} = ${n(total)} 分钟。max 表示取两者中较长的耗时。` : `2 + ${n(r)} + 4 + 3 + ${n(h)} = ${n(total)} 分钟；各项依次执行。`;
+    const stages = [
+      ['上传',0,2,'#A7A39A'],
+      ['识别票面',2,r,'#8C1515'],
+      ['读取规则',rulesStart,4,'#A7A39A'],
+      ['字段匹配',matchStart,3,'#A7A39A'],
+      ['人工复核',matchStart+3,h,'#2E2D29']
+    ];
+    const parts = [
+      '<title id="chart-title">当前假设下的一批票据处理时间</title>',
+      `<desc id="chart-desc">${concurrent?'识别与规则并行':'所有步骤串行'}，识别 ${n(r)} 分钟，复核 ${n(h)} 分钟，总计 ${n(total)} 分钟，相对同参数串行节省 ${n(serial-total)} 分钟。</desc>`,
+      '<defs><pattern id="waiting" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 2 L2 -2 M0 8 L8 0 M6 10 L10 6" stroke="#A7A39A" stroke-width="1.4"/></pattern></defs>',
+      '<rect width="640" height="480" fill="#FBFAF8"/>',
+      '<g font-family="PingFang SC,Microsoft YaHei,sans-serif">',
+      svgText(28,42,'每批任务 / 分钟',24,'#66635D')
+    ];
+    for(let tick=0; tick<=32; tick+=4) {
+      parts.push(`<line x1="${x(tick)}" y1="88" x2="${x(tick)}" y2="413" stroke="#D8D6D0"/>`,svgText(x(tick),78,n(tick),20,'#66635D',400,'middle'));
+    }
+    stages.forEach(([label,start,duration,color],i) => {
+      const y=108+i*64;
+      parts.push(svgText(28,y+26,label,24),`<rect x="${x(start)}" y="${y}" width="${duration*13}" height="36" rx="3" fill="${color}"/>`);
+      if(duration>=2) parts.push(svgText(x(start+duration/2),y+26,n(duration),21,'#FFFFFF',600,'middle'));
+      else parts.push(svgText(x(start+duration/2),y-7,n(duration),21,color,600,'middle'));
+      if(concurrent && (i===1 || i===2) && start+duration<matchStart) {
+        parts.push(`<rect x="${x(start+duration)}" y="${y}" width="${(matchStart-start-duration)*13}" height="36" fill="url(#waiting)" stroke="#A7A39A"/>`);
+      }
+    });
+    parts.push(svgText(28,457,`完成：第 ${n(total)} 分钟`,24,'#8C1515',700),'</g>');
+    get('timeline').innerHTML=parts.join('');
+    let message;
+    if(!concurrent) message='串行时，识别每减少 1 分钟，全程也减少 1 分钟。两项任务是否彼此独立，决定能否通过并行额外省时。';
+    else if(r>4) message=`识别决定并行阶段何时结束；规则读完后仍要等 ${n(r-4)} 分钟。识别缩短到 4 分钟之前，每加快 1 分钟都能缩短全程 1 分钟。`;
+    else if(r===4) message='两项任务恰好同时完成。继续加速识别，规则读取就会成为等待对象；仅识别变快不再缩短全程。';
+    else message=`识别先完成，仍要等待规则 ${n(4-r)} 分钟。继续加速识别不会缩短全程，需要改变其他环节。`;
+    get('insight').textContent=message;
+  }
+  [recognition,review,parallel].forEach(input => input.addEventListener('input',render));
+  get('reset').addEventListener('click',() => { recognition.value='6'; review.value='5'; parallel.checked=true; render(); });
+  render();
+  get('explorer').hidden=false;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 932" width="640" height="932" role="img" aria-labelledby="title desc">
+<title id="title">识别提速后，最长阶段从并行取数变为人工复核</title>
+<desc id="desc">所有数值均为教学假设。识别耗时由6分钟降至2分钟，读取规则仍需4分钟，因此并行取数阶段由6分钟降至4分钟。上传2分钟、匹配3分钟和复核5分钟不变。总耗时16分钟降至14分钟。</desc>
+<defs><pattern id="wait" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 2 L2 -2 M0 8 L8 0 M6 10 L10 6" stroke="#A7A39A" stroke-width="1.4"/></pattern></defs>
+<g font-family="PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="640" height="932" rx="4" fill="#FBFAF8" stroke="none" />
+<rect x="32" y="32" width="5" height="32" rx="0" fill="#8C1515" stroke="none" />
+<text x="52" y="57" font-size="28" fill="#2E2D29" font-weight="700" text-anchor="start">识别变快，全程收益却变小</text>
+<text x="32" y="104" font-size="24" fill="#66635D" font-weight="400" text-anchor="start">识别耗时</text>
+<text x="32" y="155" font-size="34" fill="#8C1515" font-weight="700" text-anchor="start">6 → 2 分钟</text>
+<text x="340" y="104" font-size="24" fill="#66635D" font-weight="400" text-anchor="start">全程耗时</text>
+<text x="340" y="155" font-size="34" fill="#2E2D29" font-weight="700" text-anchor="start">16 → 14 分钟</text>
+<line x1="32" y1="183" x2="608" y2="183" stroke="#D8D6D0" stroke-width="1" />
+<rect x="32" y="210" width="24" height="17" rx="4" fill="#8C1515" stroke="none" />
+<text x="66" y="226" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">原方案</text>
+<rect x="235" y="210" width="24" height="17" rx="4" fill="#2E2D29" stroke="none" />
+<text x="269" y="226" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">识别提速后</text>
+<text x="608" y="265" font-size="22" fill="#66635D" font-weight="400" text-anchor="end">每批耗时 / 分钟</text>
+<line x1="208" y1="290" x2="208" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="208" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">0</text>
+<line x1="264" y1="290" x2="264" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="264" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">1</text>
+<line x1="320" y1="290" x2="320" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="320" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">2</text>
+<line x1="376" y1="290" x2="376" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="376" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">3</text>
+<line x1="432" y1="290" x2="432" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="432" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">4</text>
+<line x1="488" y1="290" x2="488" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="488" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">5</text>
+<line x1="544" y1="290" x2="544" y2="707" stroke="#D8D6D0" stroke-width="1" />
+<text x="544" y="285" font-size="22" fill="#66635D" font-weight="400" text-anchor="middle">6</text>
+<text x="32" y="342" font-size="24" fill="#2E2D29" font-weight="600" text-anchor="start">上传</text>
+<rect x="208" y="309" width="112" height="24" rx="4" fill="#8C1515" stroke="none" />
+<rect x="208" y="343" width="112" height="24" rx="4" fill="#2E2D29" stroke="none" />
+<text x="329" y="329" font-size="22" fill="#8C1515" font-weight="600" text-anchor="start">2</text>
+<text x="329" y="363" font-size="22" fill="#2E2D29" font-weight="600" text-anchor="start">2</text>
+<text x="32" y="446" font-size="24" fill="#2E2D29" font-weight="600" text-anchor="start">并行取数</text>
+<rect x="208" y="413" width="336" height="24" rx="4" fill="#8C1515" stroke="none" />
+<rect x="208" y="447" width="224" height="24" rx="4" fill="#2E2D29" stroke="none" />
+<text x="553" y="433" font-size="22" fill="#8C1515" font-weight="600" text-anchor="start">6</text>
+<text x="441" y="467" font-size="22" fill="#2E2D29" font-weight="600" text-anchor="start">4</text>
+<text x="32" y="477" font-size="21" fill="#66635D" font-weight="400" text-anchor="start">取两者较长</text>
+<text x="32" y="550" font-size="24" fill="#2E2D29" font-weight="600" text-anchor="start">字段匹配</text>
+<rect x="208" y="517" width="168" height="24" rx="4" fill="#8C1515" stroke="none" />
+<rect x="208" y="551" width="168" height="24" rx="4" fill="#2E2D29" stroke="none" />
+<text x="385" y="537" font-size="22" fill="#8C1515" font-weight="600" text-anchor="start">3</text>
+<text x="385" y="571" font-size="22" fill="#2E2D29" font-weight="600" text-anchor="start">3</text>
+<text x="32" y="654" font-size="24" fill="#2E2D29" font-weight="600" text-anchor="start">人工复核</text>
+<rect x="208" y="621" width="280" height="24" rx="4" fill="#8C1515" stroke="none" />
+<rect x="208" y="655" width="280" height="24" rx="4" fill="#2E2D29" stroke="none" />
+<text x="497" y="641" font-size="22" fill="#8C1515" font-weight="600" text-anchor="start">5</text>
+<text x="497" y="675" font-size="22" fill="#2E2D29" font-weight="600" text-anchor="start">5</text>
+<line x1="32" y1="739" x2="608" y2="739" stroke="#D8D6D0" stroke-width="1" />
+<text x="32" y="782" font-size="27" fill="#2E2D29" font-weight="700" text-anchor="start">为什么只省 2 分钟？</text>
+<text x="32" y="823" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">规则仍需 4 分钟，不能随识别一起变快。</text>
+<text x="32" y="863" font-size="24" fill="#2E2D29" font-weight="400" text-anchor="start">复核占 5 分钟，成为新的最长阶段。</text>
+<text x="32" y="905" font-size="23" fill="#66635D" font-weight="400" text-anchor="start">假设示意；单批延迟不等于稳态产能。</text>
+</g></svg>
