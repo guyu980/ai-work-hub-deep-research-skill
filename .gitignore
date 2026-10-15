@@ -23,6 +23,7 @@ Memory Graph/
 # Generated test and report artifacts
 *.html
 !ai-work-hub-deep-research/assets/report-template.html
+!ai-work-hub-deep-research/examples/receipt-interactive.html
 *.csv
 *.xlsx
 *.pdf
