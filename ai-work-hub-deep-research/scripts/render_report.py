@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import argparse
-from datetime import date
+from hashlib import sha256
 from html import escape
 import os
 from pathlib import Path
@@ -15,13 +15,15 @@ REMOTE_PREFIXES = ("http://", "https://", "mailto:", "#", "data:")
 
 def output_url(value: str, source_dir: Path, output_dir: Path) -> str:
     value = value.strip()
+    if value.startswith("<") and value.endswith(">"):
+        value = value[1:-1]
     if value.startswith(REMOTE_PREFIXES):
         return escape(value, quote=True)
     path = Path(value)
     if path.is_absolute():
         return escape(path.as_uri(), quote=True)
     resolved = (source_dir / path).resolve()
-    relative = os.path.relpath(resolved, output_dir)
+    relative = os.path.relpath(resolved, output_dir.resolve())
     return escape(quote(relative, safe="/:._-?#=%&"), quote=True)
 
 
@@ -235,7 +237,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--title")
     parser.add_argument("--subtitle", default="Source-backed industry research and investment analysis")
-    parser.add_argument("--date", default=date.today().isoformat())
+    parser.add_argument("--date", help="Cover date; defaults to the ISO date in a dated report filename.")
     parser.add_argument("--template", type=Path)
     return parser.parse_args()
 
@@ -251,13 +253,16 @@ def main() -> None:
     )
     markdown = source.read_text(encoding="utf-8")
     title = args.title or first_h1(markdown) or source.stem
+    filename_date = re.match(r"^(\d{4}-\d{2}-\d{2})(?=[_ .-]|$)", source.stem)
+    cover_date = args.date if args.date is not None else (filename_date[1] if filename_date else "")
     article_markdown = remove_first_h1(markdown)
     article_html = markdown_to_html(article_markdown, source.parent, output.parent)
     html = template.read_text(encoding="utf-8")
     replacements = {
         "{{TITLE}}": escape(title),
         "{{SUBTITLE}}": escape(args.subtitle),
-        "{{DATE}}": escape(args.date),
+        "{{DATE}}": escape(cover_date),
+        "{{SOURCE_SHA256}}": sha256(markdown.encode("utf-8")).hexdigest(),
         "{{ARTICLE_HTML}}": article_html,
     }
     for token, value in replacements.items():
