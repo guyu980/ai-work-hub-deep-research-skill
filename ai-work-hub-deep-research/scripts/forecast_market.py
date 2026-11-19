@@ -5,6 +5,8 @@ import argparse
 import csv
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
+from stat import S_IMODE
+from tempfile import TemporaryDirectory
 
 
 REQUIRED = [
@@ -13,11 +15,15 @@ REQUIRED = [
     "software_service_ratio", "fx_to_cny", "units_source",
     "penetration_source", "price_source",
 ]
+CALCULATED = ["paid_units", "hardware_revenue", "software_service_revenue", "total_revenue", "total_revenue_cny", "row_type"]
 
 
 def decimal_value(row: dict[str, str], key: str, row_number: int) -> Decimal:
     try:
-        return Decimal(row[key].replace(",", "").strip())
+        value = Decimal(row[key].replace(",", "").strip())
+        if not value.is_finite():
+            raise InvalidOperation
+        return value
     except (InvalidOperation, AttributeError) as exc:
         raise ValueError(f"row {row_number}: invalid decimal in {key}: {row.get(key)!r}") from exc
 
@@ -31,9 +37,16 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.input.resolve() == args.output.resolve():
+        raise SystemExit("choose a separate output to preserve the model inputs")
     with args.input.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
-        missing = [column for column in REQUIRED if column not in (reader.fieldnames or [])]
+        headers = reader.fieldnames or []
+        if any(not key for key in headers) or len(set(headers)) != len(headers):
+            raise SystemExit("input has empty or duplicate column names")
+        if set(headers).intersection(CALCULATED):
+            raise SystemExit("input contains calculated output columns; use the driver file")
+        missing = [column for column in REQUIRED if column not in headers]
         if missing:
             raise SystemExit(f"missing columns: {', '.join(missing)}")
         rows = list(reader)
@@ -43,6 +56,8 @@ def main() -> None:
     details: list[dict[str, str]] = []
     totals: dict[tuple[str, str, str, str], dict[str, Decimal]] = {}
     for row_number, row in enumerate(rows, 2):
+        if None in row or None in row.values():
+            raise SystemExit(f"row {row_number}: row width differs from the header")
         units = decimal_value(row, "addressable_units", row_number)
         penetration = decimal_value(row, "paid_penetration", row_number)
         bom = decimal_value(row, "hardware_bom", row_number)
@@ -85,10 +100,7 @@ def main() -> None:
         bucket["total"] += total_revenue
         bucket["cny"] += total_cny
 
-    output_fields = REQUIRED + [
-        "paid_units", "hardware_revenue", "software_service_revenue",
-        "total_revenue", "total_revenue_cny", "row_type",
-    ]
+    output_fields = REQUIRED + [key for key in headers if key not in REQUIRED] + CALCULATED
     total_rows: list[dict[str, str]] = []
     for (scenario, geography, year, currency), values in sorted(totals.items()):
         total_rows.append(
@@ -107,11 +119,16 @@ def main() -> None:
         )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=output_fields)
-        writer.writeheader()
-        writer.writerows(details)
-        writer.writerows(total_rows)
+    with TemporaryDirectory(prefix=".forecast-", dir=args.output.parent) as directory:
+        temporary = Path(directory) / "forecast.csv"
+        with temporary.open("x", encoding="utf-8-sig", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=output_fields)
+            writer.writeheader()
+            writer.writerows(details)
+            writer.writerows(total_rows)
+        if args.output.exists():
+            temporary.chmod(S_IMODE(args.output.stat().st_mode))
+        temporary.replace(args.output)
     print(args.output)
     print(f"detail rows: {len(details)}")
     print(f"total rows: {len(total_rows)}")

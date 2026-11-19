@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import csv
 import math
+from hashlib import sha256
 from html.parser import HTMLParser
 from pathlib import Path
 import re
@@ -46,7 +47,7 @@ class ReportHTMLParser(HTMLParser):
         self.ordered_list_counts: list[int] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag in {"h1", "h2", "h3", "h4", "h5"}:
+        if tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
             self.heading_level = int(tag[1])
             self.heading_buffer = []
         elif tag == "ol":
@@ -188,13 +189,98 @@ def validate_market(path: Path, errors: list[str], warnings: list[str], model_fo
         warnings.append("custom model: structure checked; reconcile formulas and material assumptions separately")
 
 
-def validate_html(path: Path, markdown: str, errors: list[str]) -> None:
+class ArticleContent(HTMLParser):
+    """Collect the reader's prose blocks and citations independently of page controls."""
+
+    blocks = {"p", "li", "th", "td", "pre", "h1", "h2", "h3", "h4", "h5", "h6"}
+
+    def __init__(self, root_tag: str) -> None:
+        super().__init__()
+        self.root_tag = root_tag
+        self.active = False
+        self.skip_until = ""
+        self.parts: list[str] = []
+        self.text_blocks: list[str] = []
+        self.targets: list[tuple[str, str]] = []
+        self.source_digest = ""
+
+    @staticmethod
+    def target(value: str) -> str:
+        parsed = urlparse(value)
+        # A literal Unicode filename and its percent-encoded form open the same local file.
+        return value if parsed.scheme or parsed.netloc else parsed._replace(path=unquote(parsed.path)).geturl()
+
+    def finish_block(self) -> None:
+        block = " ".join("".join(self.parts).split())
+        if block:
+            self.text_blocks.append(block)
+        self.parts.clear()
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = dict(attrs)
+        if tag == "meta" and values.get("name") == "research-source-sha256":
+            self.source_digest = values.get("content") or ""
+        if tag == self.root_tag:
+            self.active = True
+        if not self.active or self.skip_until:
+            return
+        if tag in {"nav", "script", "style", "template"} or (
+            tag == "header" and "report-cover" in (values.get("class") or "").split()
+        ):
+            self.skip_until = tag
+        elif tag in self.blocks:
+            self.finish_block()
+        elif tag == "br":
+            self.parts.append(" ")
+        elif tag == "a" and values.get("href"):
+            self.targets.append(("link", self.target(values["href"])))
+        elif tag == "img" and values.get("src"):
+            self.targets.append(("image", self.target(values["src"])))
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.skip_until:
+            if tag == self.skip_until:
+                self.skip_until = ""
+            return
+        if self.active and (tag in self.blocks or tag == self.root_tag):
+            self.finish_block()
+        if tag == self.root_tag:
+            self.active = False
+
+    def handle_data(self, data: str) -> None:
+        if self.active and not self.skip_until:
+            self.parts.append(data)
+
+
+def compare_article(path: Path, report: Path, markdown: str, html: str, differences: list[str]) -> None:
+    from render_report import markdown_to_html, remove_first_h1
+
+    source = ArticleContent("article")
+    source.feed("<article>" + markdown_to_html(remove_first_h1(markdown), report.parent, path.parent) + "</article>")
+    reader = ArticleContent("article" if re.search(r"<article[\s>]", html, re.I) else "body")
+    reader.feed(html)
+    if reader.source_digest and reader.source_digest != sha256(markdown.encode("utf-8")).hexdigest():
+        differences.append("HTML was rendered from a different Markdown revision")
+
+    # Reader-only figure controls and annotations can add blocks or links between
+    # source blocks. Each source item must still appear in its original order.
+    for label, expected, actual in (("text", source.text_blocks, reader.text_blocks),
+                                    ("citation or image", source.targets, reader.targets)):
+        remaining = iter(actual)
+        for item in expected:
+            if item not in remaining:
+                differences.append(f"HTML article {label} missing, changed or out of order: {str(item)[:120]}")
+                break
+
+
+def validate_html(path: Path, report: Path, markdown: str, errors: list[str], differences: list[str]) -> None:
     html = path.read_text(encoding="utf-8")
     unresolved = sorted(set(re.findall(r"\{\{[A-Z0-9_]+\}\}", html)))
     if unresolved:
         errors.append(f"HTML has unresolved template tokens: {', '.join(unresolved)}")
     if '<nav id="toc"></nav>' not in html or "querySelectorAll('h1:not(.report-cover h1), h2, h3')" not in html:
         errors.append("HTML table-of-contents structure or script is missing")
+    compare_article(path, report, markdown, html, differences)
     parser = ReportHTMLParser()
     parser.feed(html)
     md_counts = markdown_ordered_list_counts(markdown)
@@ -209,7 +295,7 @@ def validate_html(path: Path, markdown: str, errors: list[str]) -> None:
         if value.startswith(("http://", "https://", "mailto:", "#", "data:", "javascript:")):
             continue
         parsed = urlparse(value)
-        target = Path(unquote(parsed.path)) if parsed.scheme == "file" else (path.parent / unquote(value)).resolve()
+        target = Path(unquote(parsed.path)) if parsed.scheme == "file" else (path.parent / unquote(parsed.path)).resolve()
         if not target.exists():
             errors.append(f"HTML local asset is missing: {value}")
 
@@ -222,6 +308,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--market-format", choices=("generic", "shipment-bom"), default="generic")
     parser.add_argument("--require-module", action="append", choices=tuple(OPTIONAL_MODULES), default=[])
     parser.add_argument("--html", type=Path)
+    parser.add_argument("--adapted-html", action="store_true",
+                        help="Review intentional wording/placement differences in a separately edited reading edition.")
     return parser.parse_args()
 
 
@@ -242,8 +330,10 @@ def main() -> None:
         validate_evidence(args.evidence_ledger, errors, warnings)
     if args.market_model:
         validate_market(args.market_model, errors, warnings, args.market_format)
+    reading_differences: list[str] = []
     if args.html:
-        validate_html(args.html, markdown, errors)
+        validate_html(args.html, args.report, markdown, errors, reading_differences if args.adapted_html else errors)
+        warnings.extend(reading_differences)
     else:
         warnings.append("HTML report not supplied")
 
@@ -256,7 +346,10 @@ def main() -> None:
         for error in errors:
             print(f"ERROR: {error}")
         raise SystemExit(1)
-    print("DEEP RESEARCH VALIDATION PASSED")
+    if reading_differences:
+        print("STRUCTURAL VALIDATION PASSED; CHECK THE NOTED DIFFERENCES IN THE ADAPTED EDITION")
+    else:
+        print("DEEP RESEARCH VALIDATION PASSED")
 
 
 if __name__ == "__main__":

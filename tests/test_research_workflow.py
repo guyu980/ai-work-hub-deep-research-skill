@@ -2,6 +2,7 @@ import csv
 import importlib.util
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -61,6 +62,77 @@ class ResearchWorkflowTests(unittest.TestCase):
         self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
         result = self.run_script("validate_research.py", "--report", report, "--require-module", "market")
         self.assertNotEqual(result.returncode, 0)
+
+    def test_report_revision_preserves_edition_date_and_checks_the_reader_copy(self):
+        report = self.root / "2024-01-02_sample.md"
+        read_dir = self.root / "reader"
+        output = read_dir / "study.html"
+        (self.root / "source with spaces.md").write_text("# Evidence")
+        text = ("# Sample\n\n## Investment judgment\nMeasured cost is 12.\n\n"
+                "| Case | Units |\n|---|---|\n| Baseline | 32 |\n\n"
+                "## Sources\n[Record](<source with spaces.md?view=read#record>) and "
+                "[Publication](https://example.org/paper).\n")
+        report.write_text(text)
+
+        def check(*options):
+            return self.run_script("validate_research.py", "--report", report, "--html", output, *options)
+
+        render = self.run_script("render_report.py", "--input", report, "--output", output)
+        self.assertEqual(render.returncode, 0, render.stderr)
+        reader = output.read_text()
+        self.assertIn("2024-01-02", reader)
+        self.assertIn("../source%20with%20spaces.md?view=read#record", reader)
+        checked = check()
+        self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+        for original, changed in (("Measured cost is 12.", "Measured cost is 11."),
+                                  ("<td>32</td>", "<td>16</td>"),
+                                  ("https://example.org/paper", "https://example.org/old")):
+            with self.subTest(original=original):
+                output.write_text(reader.replace(original, changed))
+                self.assertNotEqual(check().returncode, 0)
+        output.write_text(reader)
+        report.write_text(text.replace("Measured cost is 12.", ""))
+        self.assertNotEqual(check().returncode, 0)
+
+        # Legacy and separately edited editions have no source fingerprint.
+        report.write_text(text)
+        legacy = re.sub(r'<meta name="research-source-sha256"[^>]*>', "", reader)
+        output.write_text(legacy.replace("<td>32</td>", "<td>16</td>"))
+        self.assertNotEqual(check().returncode, 0)
+        adapted = check("--adapted-html")
+        self.assertEqual(adapted.returncode, 0, adapted.stdout)
+        self.assertIn("WARNING: HTML article text", adapted.stdout)
+        (self.root / "source with spaces.md").unlink()
+        self.assertNotEqual(check("--adapted-html").returncode, 0)
+
+    def test_forecast_retains_evidence_columns_and_accepted_result_on_failure(self):
+        source = self.root / "drivers.csv"
+        output = self.root / "model.csv"
+        row = {key: "source" for key in validation.MARKET_COLUMNS}
+        row.update(year="2026", addressable_units="100", paid_penetration="0.5", hardware_bom="10",
+                   software_service_ratio="0", fx_to_cny="1", revision_note="supplier sample, revised")
+
+        def forecast():
+            with source.open("w", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=list(row))
+                writer.writeheader()
+                writer.writerow(row)
+            return self.run_script("forecast_market.py", "--input", source, "--output", output)
+
+        self.assertEqual(forecast().returncode, 0)
+        with output.open(encoding="utf-8-sig", newline="") as handle:
+            detail, total = list(csv.DictReader(handle))
+        self.assertEqual(detail["revision_note"], row["revision_note"])
+        self.assertEqual(total["total_revenue"], "500.0000")
+        accepted = output.read_bytes()
+        for invalid in ("broken", "Infinity", "NaN"):
+            row["hardware_bom"] = invalid
+            self.assertNotEqual(forecast().returncode, 0)
+            self.assertEqual(output.read_bytes(), accepted)
+        row["hardware_bom"] = "10"
+        row["total_revenue"] = "old output"
+        self.assertNotEqual(forecast().returncode, 0)
+        self.assertEqual(output.read_bytes(), accepted)
 
     def test_non_hardware_model_single_year_single_region(self):
         path = self.root / "usage.csv"
